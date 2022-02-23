@@ -1,0 +1,38 @@
+{% import 'macros.html' as macro%}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% if title %}
+        <title> {{ title }}</title>
+        {% else %}
+        <title>
+            Welcome to the best Movie Review website </title>
+        {% endif %}
+    </head>
+    <body>
+        <!-- Popular movie section  -->
+            <h3> Popular Movies</h3>
+            <ul>
+                {{ macro.displayMovieList(popular)}}
+                <!-- {% for popular_movie in popular %}
+                    <li>{{ popular_movie.title}}</li>
+                {% endfor %} -->
+            </ul>
+
+        <!-- Upcoming movie section  -->
+        <h3>Upcoming movies</h3>
+        <ul>
+            <!-- {% for upcoming_movie in upcoming %}
+                <li>{{upcoming_movie.title}}</li>
+            {% endfor %} -->
+            {{ macro.displayMovieList(upcoming)}
+        </ul>
+
+        <!-- Now showing movie section  -->
+                <h3>Now Showing Movies</h3>
+                <ul> 
+                    {{ macro.displayMovieList(now_showing)}}
+                </ul>
+    </body>
+</html>
