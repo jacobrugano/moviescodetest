@@ -1,38 +1,56 @@
+{% extends 'base.html'%}
 {% import 'macros.html' as macro%}
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        {% if title %}
-        <title> {{ title }}</title>
-        {% else %}
-        <title>
-            Welcome to the best Movie Review website </title>
-        {% endif %}
-    </head>
-    <body>
-        <!-- Popular movie section  -->
-            <h3> Popular Movies</h3>
-            <ul>
-                {{ macro.displayMovieList(popular)}}
-                <!-- {% for popular_movie in popular %}
-                    <li>{{ popular_movie.title}}</li>
-                {% endfor %} -->
-            </ul>
 
-        <!-- Upcoming movie section  -->
-        <h3>Upcoming movies</h3>
+
+<!-- Styles block -->
+
+{% block styles%} 
+
+         <!-- block styles block provided by the bootstrap/base.html file. -->
+    {{ super() }} 
+       <!-- super() function to tell Jinja not to override any code that is defined in the block -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}"> 
+                      <!-- url_for() function creates a link to the static file -->
+
+{% endblock %}
+
+
+<!-- Search movies functionality -->
+{% block content %}
+<div class="container">
+    <form>
+        <input type="text" name="movie_query" placeholder="Search for a Movie" class="form-control">
+        <input type="submit"  value="Submit" class="btn btn-default">
+    </form>
+</div>
+
+<!-- Content block -->
+
+<div class="container">
+ <!-- Popular movie -->
+    <div class="row">
+        <h3> Popular Movies</h3>
         <ul>
-            <!-- {% for upcoming_movie in upcoming %}
-                <li>{{upcoming_movie.title}}</li>
-            {% endfor %} -->
-            {{ macro.displayMovieList(upcoming)}
+           {{ macro.displayMovieList(popular)}}
         </ul>
+    </div>
 
-        <!-- Now showing movie section  -->
-                <h3>Now Showing Movies</h3>
-                <ul> 
-                    {{ macro.displayMovieList(now_showing)}}
-                </ul>
-    </body>
-</html>
+<!-- Upcoming movie  -->
+    <div class="row">
+        <h3> Upcoming Movies </h3>
+        <ul>
+            {{ macro.displayMovieList(upcoming)}}
+        </ul>
+    </div>
+
+<!-- Now showing movie -->
+    <div class="row">
+        <h3>Now Showing</h3>
+        <ul>
+            {{ macro.displayMovieList(now_showing)}}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock%}

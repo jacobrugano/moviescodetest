@@ -31,6 +31,46 @@ def get_movies(category):    # We create get_movies function that takes movie ca
 
     return movie_results
 
+
+def get_movie(id): #created a GET_MOVIE() funtion that takes in the movie ID and returns the movie object.
+    get_movie_details_url = base_url.format(id,api_key)
+
+    with urllib.request.urlopen(get_movie_details_url) as url:
+        movie_details_data = url.read()
+        movie_details_response = json.loads(movie_details_data)
+
+        movie_object = None
+        if movie_details_response:
+            id = movie_details_response.get('id')
+            title = movie_details_response.get('original_title')
+            overview = movie_details_response.get('overview')
+            poster = movie_details_response.get('poster_path')
+            vote_average = movie_details_response.get('vote_average')
+            vote_count = movie_details_response.get('vote_count')
+
+            movie_object = Movie(id,title,overview,poster,vote_average,vote_count)
+
+    return movie_object
+
+
+def search_movie(movie_name):
+    search_movie_url = 'https://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(api_key,movie_name)
+                                                #We introduce a new URL for our search request that passes in our API key and the 
+                                                #movie name then we create the request and process the results.
+    with urllib.request.urlopen(search_movie_url) as url:
+        search_movie_data = url.read()
+        search_movie_response = json.loads(search_movie_data)
+
+        search_movie_results = None
+
+        if search_movie_response['results']:
+            search_movie_list = search_movie_response['results']
+            search_movie_results = process_results(search_movie_list)
+
+
+    return search_movie_results
+
+    
 # A function to process the results and Create movie objects.
 def process_results(movie_list):
     '''
@@ -51,8 +91,9 @@ def process_results(movie_list):
         vote_average = movie_item.get('vote_average')
         vote_count = movie_item.get('vote_count')
 
-    if poster: 
-        movie_object = Movie(id,title,overview,poster,vote_average,vote_count)
-        movie_results.append(movie_object)
+        if poster:
+            movie_object = Movie(id,title,overview,poster,vote_average,vote_count)
+            movie_results.append(movie_object)
 
     return movie_results
+
